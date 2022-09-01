@@ -1,5 +1,6 @@
 package org.java.yp.controller;
 
+import org.java.yp.annotation.SystemLog;
 import org.java.yp.domain.ResponseResult;
 import org.java.yp.domain.entity.User;
 import org.java.yp.service.UserService;
@@ -24,7 +25,13 @@ public class UserController {
     }
 
     @PutMapping("/userInfo")
+    @SystemLog(BusinessName = "更新用户信息")
     public ResponseResult updateUserInfo(@RequestBody User user){
         return userService.updateUserInfo(user);
+    }
+
+    @PostMapping("/register")
+    public ResponseResult register(@RequestBody User user){
+        return userService.register(user);
     }
 }
