@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 @Slf4j
 public class LogAspect {
-
     @Pointcut("@annotation(org.java.yp.annotation.SystemLog)")
     public void pt(){
 
@@ -34,31 +33,27 @@ public class LogAspect {
 
     @Around("pt()")
     public Object printLog(ProceedingJoinPoint joinPoint) throws Throwable {
-
         Object proceed;
         try {
             handleBefore(joinPoint);
             proceed = joinPoint.proceed();
-            handleAfter();
+            handleAfter(proceed);
         } finally {
             // 结束后换行
             log.info("=======End=======" + System.lineSeparator());
         }
-
         return proceed;
     }
 
-    private void handleAfter() {
-
+    private void handleAfter(Object proceed) {
+        // 打印出参
+        log.info("Response       : {}",JSON.toJSONString(proceed) );
     }
 
     private void handleBefore(ProceedingJoinPoint joinPoint) {
-
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
-
         SystemLog systemLog =getSystemLog(joinPoint);
-
         log.info("=======Start=======");
         // 打印请求 URL
         log.info("URL            : {}",request.getRequestURL());
@@ -73,11 +68,9 @@ public class LogAspect {
         // 打印请求入参
         log.info("Request Args   : {}", JSON.toJSONString(joinPoint.getArgs()));
     }
-
     private SystemLog getSystemLog(ProceedingJoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         SystemLog systemLog = signature.getMethod().getAnnotation(SystemLog.class);
         return systemLog;
     }
-
 }

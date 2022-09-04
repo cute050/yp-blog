@@ -1,7 +1,10 @@
 org\java\yp\controller\CategoryController.class
+org\java\yp\controller\ArticleController.class
 org\java\yp\controller\UploadController.class
+org\java\yp\filter\JwtAuthenticationTokenFilter.class
 org\java\yp\config\SecurityConfig.class
 org\java\yp\controller\BlogLoginController.class
 org\java\yp\controller\LinkController.class
 org\java\yp\controller\CommentController.class
+org\java\yp\SangGengBlogApplication.class
 org\java\yp\controller\UserController.class
